@@ -1,0 +1,43 @@
+.wrap {
+    width: 800px;
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.line {
+    z-index: 1;
+    width: 800px;
+    height: 10px;
+    background-color: darkgray;
+    position: absolute;
+}
+
+.circles {
+    display: flex;
+    width: 800px;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.circle {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: greenyellow;
+    color: white;
+    font-size: 24px;
+}
+
+.purple {
+    background-color: purple;
+}
+
+.gray {
+    background-color: gray;
+    color: black;
+}
+
