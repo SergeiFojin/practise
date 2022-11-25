@@ -25,12 +25,15 @@
 
 .main-header {
     margin-top: 4.86%;
+}
+.main-header-title {
     font-family: Ubuntu;
     font-style: normal;
     font-size: 40px;
     line-height: 46px;
     color: #112D4E;
 }
+
 
 .main-form {
     margin-top: 2.582%;
@@ -62,6 +65,9 @@
     border: none;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main-line {
