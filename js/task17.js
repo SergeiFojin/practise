@@ -2,7 +2,7 @@
 // В функцию передаем массив. Нужно вернуть массив, в котором отсутствуют ложные значения
 
 function clearArray(arr) {
-    return arr.filter(el => !!el != false);
+    return arr.filter(el => !!el !== false);
 }
 
 console.log(clearArray())

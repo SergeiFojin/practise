@@ -3,11 +3,8 @@
 
 function checkCorrectValue(arr, value) {
     for(let i = 0; i < arr.length; i++) {
-        if(typeof arr[i] === 'object') {
-            if(Object.values(arr[i]).includes(value)) return true;
-        } else if(arr[i] === value){
-            return true;
-        }
+        if(arr[i] === value) return true;
+        if(typeof arr[i] === 'object' && Object.values(arr[i]).includes(value)) return true;
     }
 }
 

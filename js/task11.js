@@ -3,9 +3,11 @@
 
 function returnCorrectValues(collection, value) {
     let res = [];
+
     for(key of collection.keys()){
         if(Object.keys(key).includes(value)) res.push(key[value])
     }
+
     return res;
 }
 

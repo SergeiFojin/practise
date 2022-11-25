@@ -3,9 +3,11 @@
 
 function returnIndexSmallerValues(arr, value) {
     let res = [];
+
     for(let i = 0; i < arr.length; i++) {
         if(arr[i] < value) res.push(i);
     }
+
     return res;
 }
 

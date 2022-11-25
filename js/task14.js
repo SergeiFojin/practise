@@ -2,9 +2,11 @@
 
 function returnSumArray(...args) {
     let arr = [];
+
     for(let arg of args) {
         arr = arr.concat(arg);
     }
+
     return arr;
 }
 

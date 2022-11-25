@@ -5,6 +5,7 @@ function checkCorrectCollections(collection, value1, value2) {
     for(key of collection.keys()){
         if(!(Object.values(key).includes(value1) && Object.values(key).includes(value2))) return;
     }
+
     return true;
 }
 

@@ -3,10 +3,13 @@
 
 function findExtremumValues(collection) {
     let array = [];
+
     for(key of collection.keys()) {
         array = array.concat(Object.values(key));
     }
+
     array = array.sort((a, b) => a - b);
+
     return {'min':array[0], 'max':array[array.length-1],}
 }
 
