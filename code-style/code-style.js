@@ -8,16 +8,10 @@ const str = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce comm
              Aenean vehicula suscipit ligula nec rhoncus. Etiam vitae porttitor nunc, sed placerat nunc.
 `;
 
-const array1 = [6, 4, 8, -2, 6, 8, -1, 7, 8, 8, -9, 3, 5];
-const array2 = [6, 4, 8, -2, 6, 8, -1, 7, 8, 8, -9, 3, 5];
-const array3 = [6, 4, 8, -2, 6, 8, -1, 7, 8, 8, -9, 3, 5];
-
-let result1 = filterFunc1(array1);
-let result2 = filterFunc2(array2,4);
-let result3 = filterFunc3(array3,4);
+const array = [6, 4, 8, -2, 6, 8, -1, 7, 8, 8, -9, 3, 5];
 
 
-function filterFunc1(array) {
+let filterPositiveValue = (array) => {
     let newArr = [];
 
     array.forEach(elem => {
@@ -29,7 +23,7 @@ function filterFunc1(array) {
     return newArr;
 }
 
-function filterFunc2(array, value) {
+let filterLargerValue = (array, value) => {
     let newArr = [];
 
     array.forEach(elem => {
@@ -41,22 +35,25 @@ function filterFunc2(array, value) {
     return newArr;
 }
 
-function filterFunc3(array, value) {
+let checkLargerValue = (array, value) => {
     let newArr = [];
 
     array.forEach(elem => {
-        if (elem > value) {
-            newArr.push(elem);
-        } else {
-            newArr.push(null);
-        }
+        return (elem > value) ? newArr.push(elem) : newArr.push(null);
     })
 
     return newArr;
 }
 
 
-function testFunction(string) {
+let testFunction = (string) => {
     console.log(`string1 ${string} test function`);
     console.log(`text string output`);
 }
+
+
+let result1 = filterPositiveValue(array);
+let result2 = filterLargerValue(array,4);
+let result3 = checkLargerValue(array,4);
+
+
