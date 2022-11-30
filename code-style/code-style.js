@@ -11,7 +11,7 @@ const str = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce comm
 const array = [6, 4, 8, -2, 6, 8, -1, 7, 8, 8, -9, 3, 5];
 
 
-let filterPositiveValue = (array) => {
+const filterPositiveValue = (array) => {
     let newArr = [];
 
     array.forEach(elem => {
@@ -23,7 +23,7 @@ let filterPositiveValue = (array) => {
     return newArr;
 }
 
-let filterLargerValue = (array, value) => {
+const filterLargerValue = (array, value) => {
     let newArr = [];
 
     array.forEach(elem => {
@@ -35,25 +35,29 @@ let filterLargerValue = (array, value) => {
     return newArr;
 }
 
-let checkLargerValue = (array, value) => {
+const checkLargerValue = (array, value) => {
     let newArr = [];
 
     array.forEach(elem => {
-        return (elem > value) ? newArr.push(elem) : newArr.push(null);
+        if (elem > value) {
+            return newArr.push(elem);
+        }
+
+        newArr.push(null);
     })
 
     return newArr;
 }
 
 
-let testFunction = (string) => {
+const testFunction = (string) => {
     console.log(`string1 ${string} test function`);
     console.log(`text string output`);
 }
 
 
-let result1 = filterPositiveValue(array);
-let result2 = filterLargerValue(array,4);
-let result3 = checkLargerValue(array,4);
+const result1 = filterPositiveValue(array);
+const result2 = filterLargerValue(array,4);
+const result3 = checkLargerValue(array,4);
 
 
