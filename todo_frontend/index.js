@@ -1,4 +1,4 @@
-import { addTaskRequest, changeTaskRequest, completeTaskRequest, deleteTaskRequest } from "./API/axios.js";
+import { addTaskRequest, changeTaskRequest, deleteTaskRequest } from "./API/axios.js";
 const addTaskButton = document.querySelector('.main-form-button');
 const newTaskForm = document.querySelector('.main-form-text');
 const mainList = document.querySelector('.main-list');
@@ -54,7 +54,6 @@ const addTask = () => {
 
             if (newTaskForm.value === '') {
                 alert('New task is empty! Write a new task!');
-                return;
             } else {
                 if (todos.length === 0) {
                     todos.push({id: `${Date.now()}`, value: newTaskForm.value, completed: false});
@@ -67,8 +66,7 @@ const addTask = () => {
                         }
                     })
 
-                    todos.push({id: `${Date.now()}`, value: newTaskForm.value, completed: false});
-                    todos = [...todos, ...completedTasks]
+                    todos = [...todos, {id: `${Date.now()}`, value: newTaskForm.value, completed: false}, ...completedTasks]
                 }
                 addTaskRequest(`${Date.now()}`, newTaskForm.value, false);
                 newTaskForm.value = '';
@@ -103,7 +101,7 @@ const addTask = () => {
 
 const changeTask = (e) => {
     if (e.target.classList.contains('main-list-elem-input')) {
-        changeTaskRequest(`${e.target.id}`, `${e.target.value}`);
+        changeTaskRequest(`${e.target.id}`, `${e.target.value}`, false);
     }
 }
 
@@ -118,8 +116,7 @@ const completeTask = (e) => {
             task.children[1].removeAttribute('disabled');
             mainList.children[0].before(task);
         }
-
-        completeTaskRequest(`${e.target.id}`);
+        changeTaskRequest(`${e.target.id}`, `${e.target.parentNode.nextElementSibling.value}`, true);
     }
 }
 

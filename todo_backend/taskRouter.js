@@ -13,11 +13,7 @@ const writeFileAsync = async (path, data) => {
     }))
 }
 
-router.get('/', (req, res) => {
-    res.send(storageTasks);
-})
-
-router.post('/api/ADD/task', async (req, res) => {
+router.post('/task', async (req, res) => {
     try {
         if (storageTasks.length === 0) {
             storageTasks.push(req.body);
@@ -30,8 +26,7 @@ router.post('/api/ADD/task', async (req, res) => {
                 }
             })
 
-            storageTasks.push(req.body);
-            storageTasks = [...storageTasks, ...completedTasks]
+            storageTasks = [...storageTasks, req.body, ...completedTasks]
         }
         writeFileAsync(path.resolve(__dirname, 'tasks.json'), JSON.stringify(storageTasks))
         res.status(200).send(`Task with id = ${req.body.id} was added.`)
@@ -40,11 +35,15 @@ router.post('/api/ADD/task', async (req, res) => {
     }
 })
 
-router.put('/api/CHANGE/task', async (req, res) => {
+router.put('/task', async (req, res) => {
     try {
-        let changeTaskIndex = storageTasks.findIndex(item => item.id === req.body.id);
-        if (changeTaskIndex !== -1) {
-            storageTasks[changeTaskIndex].value = req.body.value;
+        const changeTaskIndex = storageTasks.findIndex(item => item.id === req.body.id);
+        storageTasks[changeTaskIndex].value = req.body.value;
+        if (changeTaskIndex !== -1 && req.body.complete) {
+            const operationWithArray = storageTasks[changeTaskIndex].completed ? 'unshift' : 'push';
+            storageTasks[changeTaskIndex].completed = !storageTasks[changeTaskIndex].completed;
+            const completedTask = storageTasks.splice(changeTaskIndex, 1);
+            storageTasks[operationWithArray](completedTask[0]);
         }
         writeFileAsync(path.resolve(__dirname, 'tasks.json'), JSON.stringify(storageTasks))
         res.status(200).send(`Task with id = ${req.body.id} was changed.`)
@@ -53,32 +52,9 @@ router.put('/api/CHANGE/task', async (req, res) => {
     }
 })
 
-router.put('/api/COMPLETE/task',  (req, res) => {
+router.delete(`/task`, async (req, res) => {
     try {
-        let completeTaskIndex = storageTasks.findIndex(item => item.id === req.body.id && !item.completed);
-        if (completeTaskIndex !== -1) {
-            storageTasks[completeTaskIndex].completed = true;
-            let completedTask = storageTasks.splice(completeTaskIndex, 1);
-            storageTasks.push(completedTask[0]);
-        } else {
-            completeTaskIndex = storageTasks.findIndex(item => item.id === req.body.id && item.completed);
-            if (completeTaskIndex !== -1) {
-                storageTasks[completeTaskIndex].completed = false;
-                let completedTask = storageTasks.splice(completeTaskIndex, 1);
-                storageTasks.unshift(completedTask[0]);
-            }
-        }
-        writeFileAsync(path.resolve(__dirname, 'tasks.json'), JSON.stringify(storageTasks))
-        res.status(200).send(`Task with id = ${req.body.id} was completed.`)
-    } catch (e) {
-        res.status(400).json(e)
-
-    }
-})
-
-router.delete(`/api/DELETE/task`, async (req, res) => {
-    try {
-        let deleteTaskIndex = storageTasks.findIndex(item => item.id === req.query.id);
+        const deleteTaskIndex = storageTasks.findIndex(item => item.id === req.query.id);
         if (deleteTaskIndex !== -1) {
             storageTasks.splice(deleteTaskIndex, 1)
         }

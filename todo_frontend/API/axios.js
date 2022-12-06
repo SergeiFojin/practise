@@ -1,7 +1,7 @@
 export function addTaskRequest (id, value, completed) {
-    axios.post(`http://localhost:4000/api/ADD/task`, {
-        id: id,
-        value: value,
+    axios.post(`http://localhost:4000/api/task`, {
+        id,
+        value,
         completed
     })
         .then((response) => response.data)
@@ -10,20 +10,11 @@ export function addTaskRequest (id, value, completed) {
         })
 }
 
-export function changeTaskRequest (id, value) {
-    axios.put(`http://localhost:4000/api/CHANGE/task`, {
-        id: id,
-        value: value
-    })
-        .then((response) => response.data)
-        .catch(function(error) {
-            console.log(error)
-        })
-}
-
-export function completeTaskRequest (id) {
-    axios.put(`http://localhost:4000/api/COMPLETE/task`, {
-        id: id
+export function changeTaskRequest (id, value, complete) {
+    axios.put(`http://localhost:4000/api/task`, {
+        id,
+        value,
+        complete
     })
         .then((response) => response.data)
         .catch(function(error) {
@@ -32,7 +23,7 @@ export function completeTaskRequest (id) {
 }
 
 export function deleteTaskRequest (id) {
-    axios.delete(`http://localhost:4000/api/DELETE/task?id=${id}`, {
+    axios.delete(`http://localhost:4000/api/task?id=${id}`, {
     })
         .then((response) => response.data)
         .catch(function(error) {
