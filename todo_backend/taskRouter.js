@@ -38,8 +38,11 @@ router.post('/task', async (req, res) => {
 router.put('/task', async (req, res) => {
     try {
         const changeTaskIndex = storageTasks.findIndex(item => item.id === req.body.id);
+        if (changeTaskIndex === -1) {
+            throw new Error('Task with this ID was not found');
+        }
         storageTasks[changeTaskIndex].value = req.body.value;
-        if (changeTaskIndex !== -1 && req.body.complete) {
+        if (req.body.complete) {
             const operationWithArray = storageTasks[changeTaskIndex].completed ? 'unshift' : 'push';
             storageTasks[changeTaskIndex].completed = !storageTasks[changeTaskIndex].completed;
             const completedTask = storageTasks.splice(changeTaskIndex, 1);
@@ -55,9 +58,10 @@ router.put('/task', async (req, res) => {
 router.delete(`/task`, async (req, res) => {
     try {
         const deleteTaskIndex = storageTasks.findIndex(item => item.id === req.query.id);
-        if (deleteTaskIndex !== -1) {
-            storageTasks.splice(deleteTaskIndex, 1)
+        if (deleteTaskIndex === -1) {
+            throw new Error('Task with this ID was not found');
         }
+        storageTasks.splice(deleteTaskIndex, 1);
         writeFileAsync(path.resolve(__dirname, 'tasks.json'), JSON.stringify(storageTasks))
         res.status(200).send(`Task with id = ${req.query.id} was deleted.`)
     } catch (e) {
