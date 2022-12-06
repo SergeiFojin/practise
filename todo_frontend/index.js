@@ -1,4 +1,4 @@
-import { addTaskRequest, changeTaskRequest, completeTaskRequest, removeTaskRequest } from "./API/axios.js";
+import { addTaskRequest, changeTaskRequest, completeTaskRequest, deleteTaskRequest } from "./API/axios.js";
 const addTaskButton = document.querySelector('.main-form-button');
 const newTaskForm = document.querySelector('.main-form-text');
 const mainList = document.querySelector('.main-list');
@@ -18,7 +18,7 @@ const renderList = () => {
         .then(function (response) {
             todos = response.data;
 
-            todos.map(item => {
+            todos.forEach(item => {
                 const newTask = document.createElement('div');
                 newTask.classList.add('main-list-elem');
                 newTask.innerHTML = `
@@ -39,9 +39,7 @@ const renderList = () => {
                 mainList.append(newTask);
                 emptyList.remove();
             })
-
         })
-
         .catch(function(error) {
             console.log(error)
         })
@@ -56,27 +54,27 @@ const addTask = () => {
 
             if (newTaskForm.value === '') {
                 alert('New task is empty! Write a new task!');
+                return;
             } else {
                 if (todos.length === 0) {
                     todos.push({id: `${Date.now()}`, value: newTaskForm.value, completed: false});
                 } else {
-                    let test = [];
+                    let completedTasks = [];
 
-                    todos.map((item, index, array) => {
-                        if (item.completed === true) {
-                            test = todos.splice(index, array.length - index);
+                    todos.forEach((item, index, array) => {
+                        if (item.completed) {
+                            completedTasks = todos.splice(index, array.length - index);
                         }
                     })
 
                     todos.push({id: `${Date.now()}`, value: newTaskForm.value, completed: false});
-                    todos = [...todos, ...test];
+                    todos = [...todos, ...completedTasks]
                 }
                 addTaskRequest(`${Date.now()}`, newTaskForm.value, false);
                 newTaskForm.value = '';
             }
 
-            todos.map(item => {
-
+            todos.forEach(item => {
                 const newTask = document.createElement('div');
                 newTask.classList.add('main-list-elem');
                 newTask.innerHTML = `
@@ -88,7 +86,7 @@ const addTask = () => {
                        <button class="main-list-elem-remove" id="${item.id}"><img class="main-list-elem-remove-img" id="${item.id}" src="source/plus.png"/></button>
                 `;
 
-                if (item.completed === true) {
+                if (item.completed) {
                     newTask.classList.add('completed');
                     newTask.children[0].children[0].setAttribute('checked', true);
                     newTask.children[1].setAttribute('disabled', true);
@@ -97,7 +95,6 @@ const addTask = () => {
                 mainList.append(newTask);
                 emptyList.remove();
             })
-
         })
         .catch(function(error) {
             console.log(error)
@@ -110,7 +107,7 @@ const changeTask = (e) => {
     }
 }
 
-const completingTask = (e) => {
+const completeTask = (e) => {
     const task = e.target.parentNode.parentNode;
     if (e.target.classList.contains('main-list-elem-item-checkbox')) {
         task.classList.toggle('completed');
@@ -131,7 +128,7 @@ const removeTask = (e) => {
     if (e.target.classList.contains('main-list-elem-remove-img')) {
         task.remove();
         checkEmptyList();
-        removeTaskRequest(`${e.target.id}`);
+        deleteTaskRequest(`${e.target.id}`);
     }
 }
 
@@ -145,12 +142,9 @@ if (addTaskButton) {
 
 if (mainList) {
     mainList.addEventListener('change', changeTask);
-    mainList.addEventListener('click', completingTask);
+    mainList.addEventListener('click', completeTask);
     mainList.addEventListener('click', removeTask);
 }
 
-
 renderList();
 checkEmptyList();
-
-
