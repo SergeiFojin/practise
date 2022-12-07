@@ -9,7 +9,6 @@ router.post('/task', async (req, res) => {
         const completedTasksArray = tasksArray.filter(item => item.completed).sort((a, b) => a.id - b.id);
         const uncompletedTasksArray = tasksArray.filter(item => !item.completed).sort((a, b) => a.id - b.id);
         const resultArray = [...uncompletedTasksArray, ...completedTasksArray];
-        console.log(resultArray)
         res.status(200).send(resultArray);
     } catch (e) {
         res.status(400).json(e)

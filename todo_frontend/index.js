@@ -1,8 +1,14 @@
-import { array, startRender, addTaskRequest, changeTaskRequest, deleteTaskRequest } from "./API/axios.js";
+import { getTasksRequest, addTaskRequest, changeTaskRequest, deleteTaskRequest } from "./API/axios.js";
 const addTaskButton = document.querySelector('.main-form-button');
 const newTaskForm = document.querySelector('.main-form-text');
 const mainList = document.querySelector('.main-list');
 const emptyList = document.createElement('div');
+let tasks = null;
+
+getTasksRequest().then(data => {
+    tasks = data;
+    renderList(tasks);
+})
 
 const checkEmptyList = () => {
     if (mainList.children.length === 0) {
@@ -12,10 +18,10 @@ const checkEmptyList = () => {
     }
 }
 
-const renderList = (array) => {
+const renderList = (todos) => {
             mainList.innerHTML = '';
 
-            array.forEach(item => {
+            todos.forEach(item => {
                 const newTask = document.createElement('div');
                 newTask.classList.add('main-list-elem');
                 newTask.innerHTML = `
@@ -40,19 +46,16 @@ const renderList = (array) => {
 }
 
 const addTask = () => {
-   axios.get('http://localhost:4000/')
-        .then(function (response) {
-            if (newTaskForm.value === '') {
-                alert('New task is empty! Write a new task!');
-            } else {
-                addTaskRequest(`${Date.now()}`, newTaskForm.value, false)
-                newTaskForm.value = '';
-            }
-        })
-        .catch(function(error) {
-            console.log(error)
-        })
-    renderList(array)
+    if (newTaskForm.value === '') {
+        alert('New task is empty! Write a new task!');
+    } else {
+        addTaskRequest(`${Date.now()}`, newTaskForm.value, false)
+            .then(data => {
+                tasks = data;
+                renderList(tasks)
+            })
+        newTaskForm.value = '';
+    }
 }
 
 const changeTask = (e) => {
@@ -74,8 +77,11 @@ const completeTask = (e) => {
             task.children[1].removeAttribute('disabled');
             mainList.children[0].before(task);
         }
-        changeTaskRequest(`${e.target.id}`, `${e.target.parentNode.nextElementSibling.value}`,true, completed);
-        renderList(array)
+        changeTaskRequest(`${e.target.id}`, `${e.target.parentNode.nextElementSibling.value}`,true, completed)
+            .then(data => {
+                tasks = data;
+                renderList(tasks)
+            })
     }
 }
 
@@ -92,7 +98,6 @@ const removeTask = (e) => {
 if (addTaskButton) {
     addTaskButton.addEventListener('click', function(e) {
         addTask();
-        checkEmptyList();
     })
 }
 
@@ -101,6 +106,3 @@ if (mainList) {
     mainList.addEventListener('click', completeTask);
     mainList.addEventListener('click', removeTask);
 }
-
-startRender()
-renderList(array)
