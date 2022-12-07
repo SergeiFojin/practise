@@ -1,6 +1,6 @@
 export async function getTasksRequest() {
     try {
-        const response = await axios.get('http://localhost:4000/');
+        const response = await axios.get('http://localhost:4000/api/');
         return response.data;
     } catch (e) {
         console.log(e);
@@ -36,8 +36,7 @@ export async function changeTaskRequest (id, value, checkComplete, completed) {
 
 export async function deleteTaskRequest (id) {
     try {
-        const response = await axios.delete(`http://localhost:4000/api/task?id=${id}`, {
-        });
+        const response = await axios.delete(`http://localhost:4000/api/task?id=${id}`);
         return response.data;
     } catch (e) {
         console.log(e);

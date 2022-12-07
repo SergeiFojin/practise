@@ -2,6 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Task = require('./task-model');
 
+router.get('/', async (req, res) => {
+    try {
+        const tasksArray = await Task.find();
+        const completedTasksArray = tasksArray.filter(item => item.completed).sort((a, b) => a.id - b.id);
+        const uncompletedTasksArray = tasksArray.filter(item => !item.completed).sort((a, b) => a.id - b.id);
+        const resultArray = [...uncompletedTasksArray, ...completedTasksArray];
+        res.status(200).send(resultArray);
+    } catch (e) {
+        res.status(400).json(e)
+    }
+})
+
 router.post('/task', async (req, res) => {
     try {
         await Task.create(req.body)
@@ -17,10 +29,8 @@ router.post('/task', async (req, res) => {
 
 router.put('/task', async (req, res) => {
     try {
-        await  Task.updateOne({id: req.body.id}, {value: req.body.value})
-        if (req.body.checkComplete) {
-            await Task.updateOne({id: req.body.id}, {completed: req.body.completed})
-        }
+        const query = {value: req.body.value, ...(req.body.checkComplete ? {completed: req.body.completed} : null)};
+        await Task.updateOne({id: req.body.id}, query);
         const tasksArray = await Task.find();
         const completedTasksArray = tasksArray.filter(item => item.completed).sort((a, b) => a.id - b.id);
         const uncompletedTasksArray = tasksArray.filter(item => !item.completed).sort((a, b) => a.id - b.id);
@@ -34,11 +44,7 @@ router.put('/task', async (req, res) => {
 router.delete(`/task`, async (req, res) => {
     try {
         await Task.deleteOne({id: req.query.id})
-        const tasksArray = await Task.find();
-        const completedTasksArray = tasksArray.filter(item => item.completed).sort((a, b) => a.id - b.id);
-        const uncompletedTasksArray = tasksArray.filter(item => !item.completed).sort((a, b) => a.id - b.id);
-        const resultArray = [...uncompletedTasksArray, ...completedTasksArray];
-        res.status(200).send(resultArray);
+        res.status(200).send(`Task with id = ${req.query.id} was deleted.`);
     } catch (e) {
         res.status(400).json(e)
     }

@@ -52,7 +52,7 @@ const addTask = () => {
         addTaskRequest(`${Date.now()}`, newTaskForm.value, false)
             .then(data => {
                 tasks = data;
-                renderList(tasks)
+                renderList(tasks);
             })
         newTaskForm.value = '';
     }
@@ -70,17 +70,16 @@ const completeTask = (e) => {
         task.classList.toggle('completed');
         let completed = true;
         task.children[1].setAttribute('disabled', true);
-        mainList.children[mainList.children.length-1].after(task);
 
         if (!(task.classList.contains('completed'))) {
             completed = !completed;
             task.children[1].removeAttribute('disabled');
-            mainList.children[0].before(task);
         }
+
         changeTaskRequest(`${e.target.id}`, `${e.target.parentNode.nextElementSibling.value}`,true, completed)
             .then(data => {
                 tasks = data;
-                renderList(tasks)
+                renderList(tasks);
             })
     }
 }
