@@ -1,20 +1,30 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-dotenv.config();
-const PORT = process.env.PORT || 4000;
 const tasks = require('./taskRouter');
-const storageTasks = require("./tasks.json");
+const Task = require('./task-model');
+dotenv.config();
+mongoose.set('strictQuery', false);
+const app = express();
+const PORT = process.env.PORT || 4000;
+const DATABASE_URL = process.env.DATABASE_URL;
+
 
 app.use(cors());
 app.use(express.json());
 app.use('/api', tasks);
-app.get('/', (req, res) => {
-    res.send(storageTasks);
-})
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-    console.log(process.pid);
-})
+const start = async () => {
+    try {
+        await mongoose.connect(DATABASE_URL)
+        app.listen(PORT, () => {
+            console.log(`Server is listening on port ${PORT}`);
+            console.log(process.pid);
+        })
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
+start()
