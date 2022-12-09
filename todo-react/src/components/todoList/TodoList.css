@@ -1,0 +1,13 @@
+.todoList-wrapper {
+    width: 100%;
+    box-shadow: 1px 1px 3px darkgray;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.todoList-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}

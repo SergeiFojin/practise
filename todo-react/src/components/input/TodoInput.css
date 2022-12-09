@@ -1,0 +1,21 @@
+.input-wrapper {
+    width: 100%;
+    background-color: white;
+    padding: 16px 16px 16px 60px;
+    box-shadow: 1px 1px 3px darkgray;
+    margin-top: 10px;
+}
+
+.input-body {
+    width: 100%;
+    border: none;
+    font-size: 24px;
+    font-weight: 100;
+    color: dimgray;
+    outline: none;
+}
+
+.input-body::placeholder {
+    color: lightgray;
+    font-style: italic;
+}

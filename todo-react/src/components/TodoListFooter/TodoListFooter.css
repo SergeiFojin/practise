@@ -1,0 +1,41 @@
+.todoList-footer {
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.todoList-footer-left {
+    padding: 5px;
+    font-size: 14px;
+    color: dimgray;
+    font-family: Arial;
+}
+
+.footer-button {
+    margin-left: 10px;
+    border: none;
+    padding: 5px 10px;
+    background-color: white;
+    font-size: 14px;
+    color: dimgray;
+    font-family: Arial;
+    cursor: pointer;
+}
+
+.footer-button:hover {
+    border: 1px solid #fae7eb;
+    border-radius: 3px;
+    margin: -1px -1px -1px 9px;
+}
+
+.footer-button:focus {
+    border: 1px solid #e1c9cc;
+    border-radius: 3px;
+    margin: -1px -1px -1px 9px;
+}
+
+.todoList-footer-clear:hover {
+    border: none;
+    text-decoration: underline;
+}

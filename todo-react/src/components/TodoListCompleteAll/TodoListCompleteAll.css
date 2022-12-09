@@ -1,0 +1,19 @@
+.todoList-complete-all {
+    position: absolute;
+    margin: -38px 0px 0px 25px;
+    width: 11px;
+    height: 23px;
+    border: none;
+    background-color: white;
+    transform: rotate(90deg);
+    opacity: 0.1;
+}
+
+.active {
+    opacity: 0.6;
+}
+
+.todoList-complete-all-img {
+    width: 100%;
+    height: 100%;
+}
